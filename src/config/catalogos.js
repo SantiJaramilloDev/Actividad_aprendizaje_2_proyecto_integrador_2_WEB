@@ -1,0 +1,202 @@
+import directorService from '../services/directorService'
+import generoService from '../services/generoService'
+import productoraService from '../services/productoraService'
+import tipoService from '../services/tipoService'
+
+const estadoOptions = [
+  { value: 'Activo', label: 'Activo' },
+  { value: 'Inactivo', label: 'Inactivo' },
+]
+
+const estadoField = {
+  name: 'estado',
+  label: 'Estado',
+  type: 'select',
+  required: true,
+  options: estadoOptions,
+  hint: 'Solo los registros activos pueden asociarse a una producción.',
+}
+
+export const catalogos = [
+  {
+    key: 'generos',
+    resource: 'género',
+    resourcePlural: 'géneros',
+    title: 'Géneros',
+    description: 'Clasifica las producciones del catálogo.',
+    icon: 'bi-tags',
+    service: generoService,
+    hasEstado: true,
+    searchKeys: ['nombre', 'descripcion'],
+    searchPlaceholder: 'Buscar por nombre o descripción…',
+    emptyTitle: 'Aún no hay géneros',
+    emptyMessage: 'Crea el primer género para clasificar las producciones.',
+    fields: [
+      {
+        name: 'nombre',
+        label: 'Nombre',
+        type: 'text',
+        required: true,
+        maxLength: 80,
+        placeholder: 'Ej. Ciencia ficción',
+        autoComplete: 'off',
+      },
+      estadoField,
+      {
+        name: 'descripcion',
+        label: 'Descripción',
+        type: 'textarea',
+        maxLength: 500,
+        rows: 3,
+        placeholder: 'Describe brevemente el género',
+        hint: 'Opcional. Máximo 500 caracteres.',
+      },
+    ],
+    columns: [
+      { key: 'nombre', label: 'Nombre', kind: 'strong' },
+      { key: 'descripcion', label: 'Descripción', kind: 'text' },
+      { key: 'estado', label: 'Estado', kind: 'status' },
+      { key: 'fechaActualizacion', label: 'Actualizado', kind: 'date' },
+    ],
+    initialValues: {
+      nombre: '',
+      estado: 'Activo',
+      descripcion: '',
+    },
+  },
+  {
+    key: 'directores',
+    resource: 'director',
+    resourcePlural: 'directores',
+    title: 'Directores',
+    description: 'Gestiona el director principal de cada producción.',
+    icon: 'bi-person-video2',
+    service: directorService,
+    hasEstado: true,
+    searchKeys: ['nombres'],
+    searchPlaceholder: 'Buscar director por nombre…',
+    emptyTitle: 'Aún no hay directores',
+    emptyMessage: 'Registra el primer director para asociarlo a una producción.',
+    fields: [
+      {
+        name: 'nombres',
+        label: 'Nombres',
+        type: 'text',
+        required: true,
+        maxLength: 120,
+        placeholder: 'Ej. Christopher Nolan',
+        autoComplete: 'off',
+      },
+      estadoField,
+    ],
+    columns: [
+      { key: 'nombres', label: 'Nombres', kind: 'strong' },
+      { key: 'estado', label: 'Estado', kind: 'status' },
+      { key: 'fechaActualizacion', label: 'Actualizado', kind: 'date' },
+    ],
+    initialValues: {
+      nombres: '',
+      estado: 'Activo',
+    },
+  },
+  {
+    key: 'productoras',
+    resource: 'productora',
+    resourcePlural: 'productoras',
+    title: 'Productoras',
+    description: 'Administra las productoras principales del catálogo.',
+    icon: 'bi-building',
+    service: productoraService,
+    hasEstado: true,
+    searchKeys: ['nombre', 'slogan', 'descripcion'],
+    searchPlaceholder: 'Buscar por nombre o slogan…',
+    emptyTitle: 'Aún no hay productoras',
+    emptyMessage: 'Registra la primera productora para el catálogo.',
+    fields: [
+      {
+        name: 'nombre',
+        label: 'Nombre',
+        type: 'text',
+        required: true,
+        maxLength: 120,
+        placeholder: 'Ej. Warner Bros.',
+        autoComplete: 'off',
+      },
+      {
+        name: 'slogan',
+        label: 'Slogan',
+        type: 'text',
+        maxLength: 200,
+        placeholder: 'Ej. La experiencia cinematográfica',
+        hint: 'Opcional. Máximo 200 caracteres.',
+      },
+      estadoField,
+      {
+        name: 'descripcion',
+        label: 'Descripción',
+        type: 'textarea',
+        maxLength: 500,
+        rows: 3,
+        placeholder: 'Describe brevemente la productora',
+        hint: 'Opcional. Máximo 500 caracteres.',
+      },
+    ],
+    columns: [
+      { key: 'nombre', label: 'Nombre', kind: 'strong' },
+      { key: 'slogan', label: 'Slogan', kind: 'text' },
+      { key: 'estado', label: 'Estado', kind: 'status' },
+      { key: 'fechaActualizacion', label: 'Actualizado', kind: 'date' },
+    ],
+    initialValues: {
+      nombre: '',
+      slogan: '',
+      estado: 'Activo',
+      descripcion: '',
+    },
+  },
+  {
+    key: 'tipos',
+    resource: 'tipo',
+    resourcePlural: 'tipos',
+    title: 'Tipos',
+    description: 'Administra los tipos de multimedia, como películas y series.',
+    icon: 'bi-collection-play',
+    service: tipoService,
+    hasEstado: false,
+    searchKeys: ['nombre', 'descripcion'],
+    searchPlaceholder: 'Buscar tipo por nombre…',
+    emptyTitle: 'Aún no hay tipos',
+    emptyMessage: 'Crea el primer tipo de multimedia para el catálogo.',
+    fields: [
+      {
+        name: 'nombre',
+        label: 'Nombre',
+        type: 'text',
+        required: true,
+        maxLength: 80,
+        placeholder: 'Ej. Película',
+        autoComplete: 'off',
+      },
+      {
+        name: 'descripcion',
+        label: 'Descripción',
+        type: 'textarea',
+        maxLength: 500,
+        rows: 3,
+        placeholder: 'Describe brevemente el tipo',
+        hint: 'Opcional. Máximo 500 caracteres.',
+      },
+    ],
+    columns: [
+      { key: 'nombre', label: 'Nombre', kind: 'strong' },
+      { key: 'descripcion', label: 'Descripción', kind: 'text' },
+      { key: 'fechaActualizacion', label: 'Actualizado', kind: 'date' },
+    ],
+    initialValues: {
+      nombre: '',
+      descripcion: '',
+    },
+  },
+]
+
+export default catalogos
